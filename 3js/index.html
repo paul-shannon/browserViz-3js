@@ -785,6 +785,39 @@ var ThreeJSModule = (function () {
 //--------------------------------------------------------------------------------------------
 function initializeUI ()
 {
+
+   scene = new THREE.Scene();
+   camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+   renderer = new THREE.WebGLRenderer();
+   renderer.setSize(window.innerWidth, window.innerHeight);
+   document.body.appendChild(renderer.domElement);
+   material = new THREE.PointsMaterial({size: 20, sizeAttenuation: false});
+
+    var maxPoints = 100;
+    var geometry = new THREE.Geometry();
+
+    for(var i=0; i < maxPoints; i++){
+       var maxCoord = 500;
+       var x = Math.floor(maxCoord * Math.random() - (maxCoord/2));
+       var y = Math.floor(maxCoord * Math.random() - (maxCoord/2));
+       var z = Math.floor(maxCoord * Math.random() - (maxCoord/2));
+       geometry.vertices.push(new THREE.Vector3(x, y, z));
+       }
+
+    var particles = new THREE.Points(geometry, material);
+    scene.add(particles)
+    console.log("added " + maxPoints + " points");
+    camera.position.z = 800;
+
+    render();
+    console.log("after call to render")
+    container = $("#renderingDiv");
+    container.append(renderer.domElement);
+
+} // initializeUI
+//--------------------------------------------------------------------------------------------
+function oldinitializeUI ()
+{
   console.log(1)
   renderingDiv = $("#cyMetnetDiv");
   statusDiv = $("#metnetAndPatientsStatusDiv");
@@ -850,7 +883,7 @@ function initializeUI ()
 
    // animate();
 
-} // initializeUI
+} // oldinitializeUI
 //----------------------------------------------------------------------------------------------------
 function animate()
 {
